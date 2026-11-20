@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AdGuard 过滤规则优化说明 · Yui-AdGuard-Filter</title>
+<style>
+  :root{
+    --bg:#F7F5F2; --card:#FFFFFF; --ink:#1A1A1A; --muted:#6B6B6B;
+    --line:#E7E2DA; --accent:#C4664A; --accent-soft:#F6E7E1;
+    --green:#2F7D5B; --green-soft:#E7F2EC;
+    --amber:#9A6B12; --amber-soft:#FBF2DF;
+    --red:#B43A3A; --red-soft:#F8E9E9;
+    --code-bg:#1E1E2E; --code-ink:#E6E6F0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:15px}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 24px 96px}
+  header.hero{background:#FDF9F6;border-bottom:1px solid var(--line);padding:44px 24px 36px;margin-bottom:28px}
+  header.hero .wrap{padding-bottom:0}
+  h1{margin:0 0 8px;font-family:Georgia,"Times New Roman","Songti SC",serif;font-size:30px;font-weight:600;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:4px 12px;font-size:12.5px;color:var(--muted)}
+  h2{font-family:Georgia,"Times New Roman","Songti SC",serif;font-size:21px;font-weight:600;
+    margin:38px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:16px;font-weight:600;margin:22px 0 8px}
+  p{margin:10px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:var(--card)}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-weight:600;color:var(--muted);font-size:12.5px;letter-spacing:.3px;
+    background:#FBF9F6;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+    background:#F0ECE6;border-radius:4px;padding:1px 5px;word-break:break-all}
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:14px 16px;
+    overflow-x:auto;font-size:12.5px;line-height:1.6;margin:12px 0}
+  pre code{background:none;padding:0;color:inherit;word-break:normal}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .kpi .n{font-size:24px;font-weight:600;font-family:Georgia,serif;line-height:1.2}
+  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .t-keep{background:var(--green-soft);color:var(--green)}
+  .t-drop{background:var(--red-soft);color:var(--red)}
+  .t-opt{background:var(--amber-soft);color:var(--amber)}
+  .callout{border-left:4px solid var(--accent);background:var(--accent-soft);
+    border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:14px}
+  .callout.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+  .callout.ok{border-left-color:var(--green);background:var(--green-soft)}
+  ol,ul{padding-left:22px;margin:10px 0}
+  li{margin:5px 0}
+  .muted{color:var(--muted)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+  footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>AdGuard 过滤规则优化说明</h1>
+    <p class="sub">Yui-AdGuard-Filter · 2026-11-20 · 针对 AdGuard for Windows 8.0.5595</p>
+    <div class="chips">
+      <span class="chip">AdGuard 8.0.5595</span>
+      <span class="chip">6 个本地自定义文件</span>
+      <span class="chip">8 个官方订阅</span>
+      <span class="chip">16 条推荐订阅</span>
+      <span class="chip">GitHub: CyberYui/Yui-AdGuard-Filter</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<h2 id="s1">一、结论速览</h2>
+<div class="kpis">
+  <div class="kpi"><div class="n">4</div><div class="l">保留的官方订阅</div></div>
+  <div class="kpi"><div class="n">4</div><div class="l">建议关闭的官方订阅</div></div>
+  <div class="kpi"><div class="n">2</div><div class="l">建议删除的本地列表</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l">需要手工新增的规则</div></div>
+</div>
+
+<div class="callout ok">
+<b>最重要的三件事：</b>
+<ol>
+<li>「检测到您的浏览器插件正在注入异常脚本」不是浏览器插件的问题，是 <b>AdGuard 的 DNS 保护层</b>把 <code>cdn.wwads.cn</code> 解析成了 <code>0.0.0.0</code>。加 <code>@@||wwads.cn^</code> 和 <code>@@||cdn.wwads.cn^</code> 到 DNS 规则即可（你已经加好了）。</li>
+<li><code>TT拒绝列表.txt</code> 和 <code>1.txt</code> 建议删除：前者是 Android 专属语法加正则通杀，后者 2025-10-08 就停更了。</li>
+<li>中文站拦截靠 <b>anti-AD + EasyList China + banad（日更）</b>，比 9000 条的 <code>1.txt</code> 更准更新。</li>
+</ol>
+</div>
+
+<h2 id="s2">二、你现有 6 个自定义文件的处置</h2>
+<p class="muted">目录 <code>C:\Users\YuiNo\Downloads\Documents\adguard_filter</code></p>
+<table>
+<thead><tr><th>文件</th><th>体量</th><th>处置</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td class="mono">用户自定义规则.txt</td><td>659 B / 17 条</td><td><span class="tag t-keep">保留，不动</span></td><td>含你的个人域名（自有博客、Notion、Coppool 等），只留在本机，不进公开仓库</td></tr>
+<tr><td class="mono">ok.txt</td><td>1,912 B / ~90 条</td><td><span class="tag t-keep">拆出迁移</span></td><td>通用放行 → 仓库 <code>yui-allow.txt</code>；3 条 bilibili → <code>yui-cn-extra.txt</code></td></tr>
+<tr><td class="mono">Skeyrules.txt</td><td>2,899 B / ~140 条</td><td><span class="tag t-opt">删 1 行</span></td><td>含 <code>||wwads.cn^</code>，与你新加的放行冲突；其余广告域名与订阅列表重复</td></tr>
+<tr><td class="mono">TT拒绝列表.txt</td><td>4,725 B</td><td><span class="tag t-drop">建议删除</span></td><td>来源 <code>TTDNS/Cat</code>（现 <code>A2O-A1/Cat</code>，2026-10-12）；大量 <code>$app=</code> 是 <b>Android 专属语法，Windows 上失效</b>；末尾「通杀规则」是 <code>/.*bytedance.*/</code>、<code>/.*zijieapi.*/</code>、<code>/.*umeng.*/</code> 这类正则，误伤面很大</td></tr>
+<tr><td class="mono">1.txt</td><td>217,422 B / 9,924 条</td><td><span class="tag t-drop">建议删除</span></td><td>作者「海哥」，无公开仓库，最后同步 <b>2025-10-08</b>，自称「不定时更新」</td></tr>
+<tr><td class="mono">轻量广告拦截规则.txt</td><td>129,661 B / 5,224 条</td><td><span class="tag t-opt">换成订阅</span></td><td>内容来自 <code>damengzhu/banad</code> 的 <code>jiekouAD.txt</code>，仓库 <b>2026-11-20 仍在日更</b>，你本地是 2025-10-05 的旧版</td></tr>
+</tbody>
+</table>
+
+<h2 id="s3">三、官方订阅的处置</h2>
+<p class="muted">你当前启用的官方列表</p>
+<table>
+<thead><tr><th>分类</th><th>列表名</th><th>处置</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>Ad blocking</td><td>AdGuard Base filter</td><td><span class="tag t-keep">保留</span></td><td>主力基础列表</td></tr>
+<tr><td>Privacy</td><td>AdGuard Tracking Protection filter</td><td><span class="tag t-keep">保留</span></td><td>追踪器拦截主力</td></tr>
+<tr><td>Other</td><td>Filter unblocking search ads and self-promotion</td><td><span class="tag t-drop">建议关闭</span></td><td>这个列表的作用是<b>解除</b> Google / Bing 的「搜索广告与自我推广」屏蔽，等于主动放行广告</td></tr>
+<tr><td>Annoyances</td><td>（「烦人元素拦截」已禁用）</td><td><span class="tag t-keep">保持禁用</span></td><td>你说过不需要；想要的话再单独订阅 CJX's Annoyance</td></tr>
+<tr><td>Language-specific</td><td>AdGuard Chinese filter</td><td><span class="tag t-keep">保留</span></td><td>中文主力</td></tr>
+<tr><td>Language-specific</td><td>EasyList China</td><td><span class="tag t-keep">保留</span></td><td>中文补充</td></tr>
+<tr><td>Language-specific</td><td>AdGuard Russian filter</td><td><span class="tag t-opt">可关闭</span></td><td>不访问俄语站就是纯误伤面</td></tr>
+<tr><td>Language-specific</td><td>AdGuard German filter</td><td><span class="tag t-opt">可关闭</span></td><td>同上</td></tr>
+<tr><td>Language-specific</td><td>AdGuard Japanese filter</td><td><span class="tag t-opt">可关闭</span></td><td>同上；看日文站再开</td></tr>
+</tbody>
+</table>
+
+<h2 id="s4">四、推荐新增的订阅（含仓库地址）</h2>
+<p>下面这些是官方列表之外最值得加的，<b>带仓库地址的可以直接去仓库手动添加</b>；没有独立仓库的（如 OISD）已经写进 <code>subscriptions.txt</code>。</p>
+<table>
+<thead><tr><th>优先级</th><th>列表</th><th>订阅 URL</th><th>仓库 / 来源</th><th>最近更新</th></tr></thead>
+<tbody>
+<tr><td><span class="tag t-keep">必装</span></td><td>anti-AD</td><td class="mono">https://anti-ad.net/adguard.txt</td><td class="mono">privacy-protection-tools/anti-AD<br><span class="muted">10,981 star</span></td><td>2026-11-20（日更）</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>轻量广告拦截规则</td><td class="mono">https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</td><td class="mono">damengzhu/banad<br><span class="muted">237 star</span></td><td>2026-11-20（日更）</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>217heidai 中文合并</td><td class="mono">https://github.com/217heidai/adblockfilters/releases/download/source/AdGuard_Chinese_filter.txt</td><td class="mono">217heidai/adblockfilters<br><span class="muted">Release 资产</span></td><td>2026-10-29</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>EasyPrivacy</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/118.txt</td><td>AdGuard 官方（adtidy 118）</td><td>官方持续</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>Online Malicious URL Blocklist</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/208.txt</td><td>AdGuard 官方（adtidy 208）</td><td>官方持续</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>EasyList</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/101.txt</td><td>AdGuard 官方（adtidy 101）</td><td>官方持续</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>AdGuard Mobile Ads</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/11.txt</td><td>AdGuard 官方（adtidy 11）</td><td>官方持续</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>Phishing / Scam Blocklist</td><td class="mono">…/255.txt　…/256.txt</td><td>AdGuard 官方</td><td>官方持续</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>CJX's Annoyance List</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/220.txt</td><td class="mono">cjx82630/cjxlist<br><span class="muted">2,261 star</span></td><td>2020-12-08 后低频</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>StevenBlack hosts</td><td class="mono">https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</td><td class="mono">StevenBlack/hosts</td><td>日更</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>HaGeZi multi</td><td class="mono">https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt</td><td class="mono">hagezi/dns-blocklists</td><td>频繁</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>OISD big（DNS 层）</td><td class="mono">https://big.oisd.nl/</td><td>OISD</td><td>202611200714</td></tr>
+<tr><td><span class="tag t-opt">可选</span></td><td>Peter Lowe's Blocklist</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/204.txt</td><td>AdGuard 官方</td><td>官方持续</td></tr>
+</tbody>
+</table>
+
+<div class="callout warn">
+<b>不建议再装的：</b>
+<ul>
+<li><b>1Hosts Lite</b> — 2026-09-03 停更。</li>
+<li><b>xinggsf(228)</b> — 2026-03-20 停更。</li>
+<li><b>CJX's EasyList Lite</b>（注意名字：是「EasyList Lite」，不是「Annex」）— 上游 2020-12-08 后基本没动。</li>
+</ul>
+</div>
+
+<h2 id="s5">五、仓库里的手工规则</h2>
+<h3><code>rules/yui-allow.txt</code> — 通用放行</h3>
+<pre><code>@@||playwright.nodejs.cn^
+@@||www.npmjs.com^
+@@||wwads.cn^
+@@||cdn.wwads.cn^</code></pre>
+<p class="muted">已剔除你原有文件里的所有个人域名，只保留通用项。</p>
+
+<h3><code>rules/yui-cn-extra.txt</code> — 中文站补充</h3>
+<pre><code>www.bilibili.com###placeholder
+search.bilibili.com##.search-panel
+www.bilibili.com##.adblock-tips</code></pre>
+<div class="callout warn">
+这 3 条是从你的 <code>ok.txt</code> 迁移来的，<b>未逐条真机验证</b>：bilibili 首页是 JS 渲染，静态抓取只拿到 1,374 B，<code>id="placeholder"</code> / <code>class="search-panel"</code> / <code>adblock-tips</code> 都没命中。
+出现误拦就删掉对应行。
+</div>
+
+<h2 id="s6">六、导入步骤</h2>
+<div class="card">
+<ol>
+<li><b>DNS 层放行（必做，解决 nodejs.cn 报错）</b><br>
+AdGuard → 保护 → <b>DNS 保护</b> → DNS 规则，添加：
+<pre><code>@@||wwads.cn^
+@@||cdn.wwads.cn^</code></pre>
+<p class="muted">你已完成。</p></li>
+<li><b>删掉两个本地列表</b>：<code>TT拒绝列表.txt</code>、<code>1.txt</code>（在 AdGuard 过滤器里移除，或直接从 <code>adguard_filter</code> 目录删除）。</li>
+<li><b>改一个本地列表</b>：<code>Skeyrules.txt</code> 删掉 <code>||wwads.cn^</code> 这一行。</li>
+<li><b>替换一个本地列表</b>：把 <code>轻量广告拦截规则.txt</code> 从 AdGuard 里移除，改用订阅 <code>https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</code>（日更）。</li>
+<li><b>关闭一个官方列表</b>：「Filter unblocking search ads and self-promotion」。</li>
+<li><b>添加订阅</b>：AdGuard → 保护 → 广告拦截 → 添加过滤器，把 <code>subscriptions.txt</code> 里的 URL 逐个粘贴（建议先加 anti-AD、banad、217heidai 中文这 3 个）。</li>
+<li><b>加手工规则</b>：把 <code>rules/yui-allow.txt</code> 内容复制到「设置 → 过滤器编辑器 → 用户规则」。</li>
+</ol>
+</div>
+
+<h2 id="s7">七、已知风险与未验证项</h2>
+<table>
+<thead><tr><th>项</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>bilibili 3 条规则</td><td>未真机验证（见第五节）</td></tr>
+<tr><td><code>filters.adtidy.org</code> 从本机不稳定</td><td>curl 偶发 <code>http=000</code>，但它是 AdGuard 内置列表用的同一批地址；订阅失败多重试</td></tr>
+<tr><td>GitHub raw / release 地址</td><td>本机偶发连接失败；可用 jsDelivr 镜像 <code>https://cdn.jsdelivr.net/gh/&lt;owner&gt;/&lt;repo&gt;@&lt;branch&gt;/&lt;path&gt;</code></td></tr>
+<tr><td>AdGuard 配置库不可程序化</td><td><code>C:\ProgramData\Adguard\adguard.db</code>（34 MB）被进程独占锁，只能 GUI 改；没有开放配置 API</td></tr>
+<tr><td>DNS 保护与过滤器是两套</td><td>DNS 层的域名拦截不会体现在过滤器列表里，放行必须加到 DNS 规则</td></tr>
+</tbody>
+</table>
+
+<footer>
+Yui-AdGuard-Filter · 规则为公开过滤列表的整理与手工补充 · MIT<br>
+生成日期 2026-11-20 · 对应本机 AdGuard for Windows 8.0.5595
+</footer>
+
+</div>
+</body>
+</html>
