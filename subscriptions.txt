@@ -1,71 +1,71 @@
 ! ======================================================================
 ! Yui-AdGuard-Filter · 推荐订阅清单
-! 生成日期: 2026-11-20
+! 生成日期: 2026-11-20（含 217heidai 分发变更修订）
 ! 用法: AdGuard → 保护 → 广告拦截 → 添加过滤器 → 粘贴下面的 URL
 ! 标记: [必装] 建议开启 / [可选] 按需 / [DNS] 放在「DNS 保护 → DNS 过滤器」
 ! ======================================================================
 !
-! ---------- 广告拦截 [必装] ----------
-! AdGuard Base filter（官方，adtidy 2）
-https://filters.adtidy.org/extension/chromium/filters/2.txt
-! EasyList（adtidy 101）
-https://filters.adtidy.org/extension/chromium/filters/101.txt
-! AdGuard Mobile Ads（adtidy 11）
-https://filters.adtidy.org/extension/chromium/filters/11.txt
+! ---------- 合并大列表 [必装] ----------
+! 217heidai AdBlock Filter（内容拦截层，103,465 行 / 5.72 MB，8 小时更新）
+! 已包含: AdGuard Base/Chinese/Mobile Ads/DNS、AdRules DNS、CJX's Annoyance、
+!         EasyList、EasyList China、EasyPrivacy、xinggsf mv、jiekouAD、
+!         AWAvenue、HaGeZi PRO mini、OISD Basic、StevenBlack、Pollock
+! 因为已经包含，下面这些【不用再单独订】: AdGuard Base/Chinese、EasyList China、
+!   EasyList、AdGuard Mobile Ads、EasyPrivacy、CJX's Annoyance、banad jiekouAD、
+!   OISD、HaGeZi、StevenBlack hosts
+https://ghfast.top/https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockfilters.txt
+! 217heidai AdBlock DNS（DNS 层，256,531 行 / 5.91 MB）→ 放「DNS 保护 → DNS 过滤器」
+https://ghfast.top/https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockdns.txt
 !
-! ---------- 中文专项 [必装] ----------
-! AdGuard Chinese（官方中文，adtidy 224）
-https://filters.adtidy.org/extension/chromium/filters/224.txt
-! anti-AD（中文区命中率最高，仓库 privacy-protection-tools/anti-AD，日更）
+! ---------- 广告 [必装] ----------
+! anti-AD（中文区命中率最高，日更；217heidai 明确不再引用它，需单独订）
 https://anti-ad.net/adguard.txt
-! EasyList China（adblockplus 官方中文）
-https://easylist-downloads.adblockplus.org/easylistchina.txt
-! 轻量广告拦截规则（仓库 damengzhu/banad，日更；本地副本是 2025-10-05 旧版）
-https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
-! 217heidai 中文合并版（仓库 217heidai/adblockfilters，Release 资产，2026-10-29）
-https://github.com/217heidai/adblockfilters/releases/download/source/AdGuard_Chinese_filter.txt
-!
-! ---------- 隐私 / 追踪 [必装] ----------
-! AdGuard Tracking Protection（adtidy 3）
-https://filters.adtidy.org/extension/chromium/filters/3.txt
-! EasyPrivacy（adtidy 118）
-https://filters.adtidy.org/extension/chromium/filters/118.txt
 !
 ! ---------- 恶意 / 钓鱼 [必装 208，255/256 可选] ----------
-! Online Malicious URL Blocklist（adtidy 208）
+! Online Malicious URL Blocklist（adtidy 208）—— 217heidai 不含，AdGuard 官方也不含在 Base 里
 https://filters.adtidy.org/extension/chromium/filters/208.txt
 ! Phishing URL Blocklist（adtidy 255）
 https://filters.adtidy.org/extension/chromium/filters/255.txt
 ! Scam Blocklist（adtidy 256）
 https://filters.adtidy.org/extension/chromium/filters/256.txt
 !
+! ---------- 官方基础 [必装；若已订 217heidai 可省略] ----------
+! AdGuard Base filter（adtidy 2）
+https://filters.adtidy.org/extension/chromium/filters/2.txt
+! AdGuard Tracking Protection（adtidy 3）—— 217heidai 不含追踪器列表，必须单独订
+https://filters.adtidy.org/extension/chromium/filters/3.txt
+! EasyPrivacy（adtidy 118）
+https://filters.adtidy.org/extension/chromium/filters/118.txt
+! AdGuard Chinese（adtidy 224）
+https://filters.adtidy.org/extension/chromium/filters/224.txt
+! EasyList China（adblockplus 官方中文）
+https://easylist-downloads.adblockplus.org/easylistchina.txt
+!
 ! ---------- 烦恼元素 [可选，需先在 AdGuard 打开「烦人元素拦截」] ----------
-! AdGuard Annoyances Optimized（官方，需先启用 Annoyances）
+! AdGuard Annoyances Optimized（官方）
 https://filters.adtidy.org/android/filters/14_optimized.txt
 ! CJX's Annoyance List（adtidy 220）
 https://filters.adtidy.org/extension/chromium/filters/220.txt
 !
-! ---------- hosts 类 [可选] ----------
+! ---------- hosts 类 [可选；217heidai 已含 StevenBlack + Pollock] ----------
 ! Peter Lowe's Blocklist（adtidy 204）
 https://filters.adtidy.org/extension/chromium/filters/204.txt
-! StevenBlack hosts（多源合并 hosts，日更）
-https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-! HaGeZi multi（hosts/adblock 混合，更新频繁）
+! HaGeZi multi（hosts/adblock 混合）
 https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt
 !
 ! ---------- DNS 过滤层专用 [DNS] ----------
-! 放在「保护 → DNS 保护 → DNS 过滤器」，支持 ABP 语法
-! OISD big（域名级综合，更新频繁）
+! OISD big（217heidai 已含 OISD Basic，想要更大的再用 big）
 https://big.oisd.nl/
-! 217heidai DNS 合并版
-https://github.com/217heidai/adblockfilters/releases/download/source/AdGuard_DNS_filter.txt
 !
 ! ======================================================================
 ! 备注
-! 1. filters.adtidy.org 由 AdGuard 官方维护，是本机 AdGuard 内置列表用的同一批
+! 1. 217heidai 于 2026-11-20 把分发从 Releases 迁到 dist 分支；旧链接
+!    …/releases/download/source/AdGuard_Chinese_filter.txt 已不是最新路径。
+!    本机直连 raw.githubusercontent.com 慢且不稳（实测 25.6 s），用加速前缀：
+!      https://ghfast.top/<原始 URL>   （实测 4.4 s）
+!      https://gh-proxy.com/<原始 URL>  （实测 7.5 s）
+! 2. filters.adtidy.org 由 AdGuard 官方维护，是本机 AdGuard 内置列表用的同一批
 !    地址；从本机访问偶发超时（curl 偶现 http=000），多试一次即可。
-! 2. GitHub 的 raw / release 地址从本机偶发连接失败（000）。订阅失败时改用
-!    jsDelivr 镜像: https://cdn.jsdelivr.net/gh/<owner>/<repo>@<branch>/<path>
 ! 3. 不建议再装: 1Hosts Lite（2026-09-03 停更）、xinggsf(228)（2026-03-20 停更）、
 !    CJX's EasyList Lite（2020-12-08 后低频）。
 ! ======================================================================

@@ -69,7 +69,7 @@
       <span class="chip">AdGuard 8.0.5595</span>
       <span class="chip">6 个本地自定义文件</span>
       <span class="chip">8 个官方订阅</span>
-      <span class="chip">13 条推荐订阅</span>
+      <span class="chip">14 条推荐订阅</span>
       <span class="chip">GitHub: CyberYui/Yui-AdGuard-Filter</span>
     </div>
   </div>
@@ -132,7 +132,8 @@
 <tbody>
 <tr><td><span class="tag t-keep">必装</span></td><td>anti-AD</td><td class="mono">https://anti-ad.net/adguard.txt</td><td class="mono">privacy-protection-tools/anti-AD<br><span class="muted">10,981 star</span></td><td>2026-11-20（日更）</td></tr>
 <tr><td><span class="tag t-keep">必装</span></td><td>轻量广告拦截规则</td><td class="mono">https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</td><td class="mono">damengzhu/banad<br><span class="muted">237 star</span></td><td>2026-11-20（日更）</td></tr>
-<tr><td><span class="tag t-keep">必装</span></td><td>217heidai 中文合并</td><td class="mono">https://github.com/217heidai/adblockfilters/releases/download/source/AdGuard_Chinese_filter.txt</td><td class="mono">217heidai/adblockfilters<br><span class="muted">Release 资产</span></td><td>2026-10-29</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>217heidai AdBlock Filter（内容拦截层）</td><td class="mono">https://ghfast.top/https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockfilters.txt</td><td class="mono">217heidai/adblockfilters<br><span class="muted">dist 分支，8 小时更新</span></td><td>2026-11-20</td></tr>
+<tr><td><span class="tag t-keep">必装</span></td><td>217heidai AdBlock DNS（DNS 层）</td><td class="mono">https://ghfast.top/https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockdns.txt</td><td class="mono">217heidai/adblockfilters</td><td>2026-11-20</td></tr>
 <tr><td><span class="tag t-keep">必装</span></td><td>EasyPrivacy</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/118.txt</td><td>AdGuard 官方（adtidy 118）</td><td>官方持续</td></tr>
 <tr><td><span class="tag t-keep">必装</span></td><td>Online Malicious URL Blocklist</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/208.txt</td><td>AdGuard 官方（adtidy 208）</td><td>官方持续</td></tr>
 <tr><td><span class="tag t-opt">可选</span></td><td>EasyList</td><td class="mono">https://filters.adtidy.org/extension/chromium/filters/101.txt</td><td>AdGuard 官方（adtidy 101）</td><td>官方持续</td></tr>
@@ -153,6 +154,27 @@
 <li><b>xinggsf(228)</b> — 2026-03-20 停更。</li>
 <li><b>CJX's EasyList Lite</b>（注意名字：是「EasyList Lite」，不是「Annex」）— 上游 2020-12-08 后基本没动。</li>
 </ul>
+</div>
+
+<h3>217heidai 合并规则已经包含的内容（别再重复订阅）</h3>
+<p>217heidai 的 AdBlock Filter / AdBlock DNS 是把 16 个上游列表合并去重后的产物。2026-11-20 实测：AdBlock Filter 103,465 行 / 5.72 MB，AdBlock DNS 256,531 行 / 5.91 MB，每 8 小时更新。上游包含：</p>
+<p class="muted">AdGuard Base filter、AdGuard Chinese filter、AdGuard Mobile Ads filter、AdGuard DNS filter、AdRules DNS List、CJX's Annoyance List、EasyList、EasyList China、EasyPrivacy、xinggsf mv、jiekouAD、AWAvenue Ads Rule、DNS-Blocklists PRO mini、OISD Basic、StevenBlack hosts、Pollock hosts。</p>
+<div class="callout warn">
+<b>所以下面这些不用再单独订阅</b>（重复只会让规则量翻倍、拖慢匹配）：AdGuard Base、AdGuard Chinese、EasyList China、EasyList、AdGuard Mobile Ads、EasyPrivacy、CJX's Annoyance List、banad jiekouAD、OISD、HaGeZi、StevenBlack hosts。
+</div>
+<div class="callout">
+<b>2026-11-20 重要变更：</b>该仓库调整了存储结构，规则文件从 Releases 迁到 <code>dist</code> 分支，旧订阅 <code>…/releases/download/source/AdGuard_Chinese_filter.txt</code> 已不是最新分发路径。请改用：
+<pre><code>https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockfilters.txt   （内容拦截层）
+https://raw.githubusercontent.com/217heidai/adblockfilters/dist/adblockdns.txt       （DNS 层）</code></pre>
+<p>本机直连 raw 慢且不稳（实测 25.6 s），建议加加速前缀：<code>https://ghfast.top/</code>（实测 4.4 s）或 <code>https://gh-proxy.com/</code>（7.5 s）。</p>
+</div>
+
+<h3>你唯一还缺的高价值项：恶意 / 钓鱼 URL</h3>
+<div class="callout ok">
+217heidai 的合并里<b>没有</b>恶意 URL 列表，AdGuard Tracking Protection 也不覆盖它。建议加：
+<pre><code>https://filters.adtidy.org/extension/chromium/filters/208.txt   （Online Malicious URL Blocklist）
+https://filters.adtidy.org/extension/chromium/filters/255.txt   （Phishing URL Blocklist，可选）
+https://filters.adtidy.org/extension/chromium/filters/256.txt   （Scam Blocklist，可选）</code></pre>
 </div>
 
 <h2 id="s5">五、仓库里的手工规则</h2>
@@ -182,9 +204,9 @@ AdGuard → 保护 → <b>DNS 保护</b> → DNS 规则，添加：
 <p class="muted">你已完成。</p></li>
 <li><b>删掉两个本地列表</b>：<code>TT拒绝列表.txt</code>、<code>1.txt</code>（在 AdGuard 过滤器里移除，或直接从 <code>adguard_filter</code> 目录删除）。</li>
 <li><b>改一个本地列表</b>：<code>Skeyrules.txt</code> 删掉 <code>||wwads.cn^</code> 这一行。</li>
-<li><b>替换一个本地列表</b>：把 <code>轻量广告拦截规则.txt</code> 从 AdGuard 里移除，改用订阅 <code>https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</code>（日更）。</li>
+<li><b>删掉本地副本</b>：<code>轻量广告拦截规则.txt</code> 可以直接移除——217heidai 的合并规则已包含 jiekouAD（日更）。想单独订也行：<code>https://ghfast.top/https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</code>。</li>
 <li><b>关闭一个官方列表</b>：「Filter unblocking search ads and self-promotion」。</li>
-<li><b>添加订阅</b>：AdGuard → 保护 → 广告拦截 → 添加过滤器，把 <code>subscriptions.txt</code> 里的 URL 逐个粘贴（建议先加 anti-AD、banad、217heidai 中文这 3 个）。</li>
+<li><b>添加订阅</b>：AdGuard → 保护 → 广告拦截 → 添加过滤器，把 <code>subscriptions.txt</code> 里的 URL 逐个粘贴。最小可用组合：<b>anti-AD + 217heidai AdBlock Filter + AdBlock DNS + adtidy 208</b>（前两个已含 Base / Chinese / EasyList / EasyPrivacy / jiekouAD）。</li>
 <li><b>加手工规则</b>：把 <code>rules/yui-allow.txt</code> 内容复制到「设置 → 过滤器编辑器 → 用户规则」。</li>
 </ol>
 </div>
